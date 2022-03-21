@@ -10,10 +10,12 @@ namespace ShoppingCar.Controllers
     public class ProductoController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment; // para poder recibir images
 
-        public ProductoController(ApplicationDbContext context)
+        public ProductoController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -67,5 +69,39 @@ namespace ShoppingCar.Controllers
             }
 
         }
+
+        //post
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(ProductoVM productoVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = _webHostEnvironment.WebRootPath;
+
+                if (productoVM.Producto.Id == 0)
+                {
+                    string upload = webRootPath + WC.ImagenRuta;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+                    using(var stream = new FileStream(Path.Combine(upload,fileName + extension),FileMode.Create))
+                    {
+                        files[0].CopyTo(stream);
+                    }
+                    productoVM.Producto.ImagenUrl = fileName + extension;
+                    _context.Producto.Add(productoVM.Producto);
+                }
+                else
+                {
+                    //actualizar
+                }
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            } /// model iscalid
+            return View(productoVM);
+        }
+
+
     }
 }

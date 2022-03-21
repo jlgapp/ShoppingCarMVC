@@ -51,7 +51,7 @@
 			<div class="row">
 				<div class="col-md-6">
 					<label asp-for="Producto.DescripcionProducto" class="form-label">Descripcion Prodcuto</label>
-					<input asp-for="Producto.DescripcionProducto" class="form-control" />
+					<textarea asp-for="Producto.DescripcionProducto" class="form-control summernote"></textarea>
 					<span asp-validation-for="Producto.DescripcionProducto" class="text-danger"></span>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 				}
 				else
 				{
-					<button type="submit" class="btn btn-primary">Crear Nuevo</button>
+					<button type="submit" onclick="return validarImagen()" class="btn btn-primary">Crear Nuevo</button>
 				}
 				<a asp-controller="Producto" asp-action="Index" class="btn btn-success">Regresar</a>
 			</div>
@@ -104,5 +104,21 @@
 @section Scripts {
     @{
 	<partial name="_ValidationScriptsPartial" />
-}
+ }
+<script>
+
+		$(document).ready(function(){
+			$('.summernote').summernote({
+				height:250
+			});
+		});
+		function validarImagen() {
+			if (document.getElementById("imagenId").value==""){
+				swal("Error", "Seleccione una imagen", "error");
+				return false;
+			}
+			return true;
+		}
+</script>
+
 }

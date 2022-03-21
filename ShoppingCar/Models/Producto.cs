@@ -20,10 +20,10 @@ namespace ShoppingCar.Models
         // fk
         public int CategoriaId { get; set; }
         [ForeignKey("CategoriaId")]
-        public virtual Categoria Categoria { get; set; }
+        public virtual Categoria? Categoria { get; set; }
         public int TipoAplicacionId { get; set; }
         [ForeignKey("TipoAplicacionId")]
-        public virtual TipoAplicacion TipoAplicacion { get; set; }
+        public virtual TipoAplicacion? TipoAplicacion { get; set; }
 
     }
 }
