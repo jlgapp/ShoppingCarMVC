@@ -22,79 +22,92 @@
 		<div class="form-group row">
 			<h2 class="text-info pl-3">@titulo</h2>
 		</div>
+		<div class="row">
+			<div class="col-8">
 
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.NombreProducto" class="form-label">Nombre Producto</label>
-					<input asp-for="Producto.NombreProducto" class="form-control" />
-					<span asp-validation-for="Producto.NombreProducto" class="text-danger"></span>
+
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.NombreProducto" class="form-label">Nombre Producto</label>
+							<input asp-for="Producto.NombreProducto" class="form-control" />
+							<span asp-validation-for="Producto.NombreProducto" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.Precio" class="form-label">Precio Prodcuto</label>
+							<input asp-for="Producto.Precio" class="form-control" />
+							<span asp-validation-for="Producto.Precio" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.DescripcionCorta" class="form-label">Descripcion Corta</label>
+							<input asp-for="Producto.DescripcionCorta" class="form-control" />
+							<span asp-validation-for="Producto.DescripcionCorta" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.DescripcionProducto" class="form-label">Descripcion Prodcuto</label>
+							<textarea asp-for="Producto.DescripcionProducto" class="form-control summernote"></textarea>
+							<span asp-validation-for="Producto.DescripcionProducto" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.ImagenUrl" class="form-label">Imagen Prodcuto</label>
+							<input type="file" name="files" id="imagenId" class="form-control" />
+						</div>
+					</div>
+					<br />
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.CategoriaId" class="form-label">Categoria</label>
+							<select asp-for="Producto.CategoriaId" asp-items="@Model.CategoriaLista" class="form-select">
+								<option disabled selected>--Seleccione--</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<label asp-for="Producto.TipoAplicacionId" class="form-label">Tipo Aplicacion</label>
+							<select asp-for="Producto.TipoAplicacionId" asp-items="@Model.TipoAplicacionLista" class="form-select">
+								<option disabled selected>--Seleccione--</option>
+							</select>
+						</div>
+					</div>
+
+					<br />
+
+					<div class="d-grid gap-2 d-md-block">
+						@if (Model.Producto.Id != 0)
+						{
+							<button type="submit" class="btn btn-primary">Actualizar</button>
+
+						}
+						else
+						{
+							<button type="submit" onclick="return validarImagen()" class="btn btn-primary">Crear Nuevo</button>
+						}
+						<a asp-controller="Producto" asp-action="Index" class="btn btn-success">Regresar</a>
+					</div>
+
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.Precio" class="form-label">Precio Prodcuto</label>
-					<input asp-for="Producto.Precio" class="form-control" />
-					<span asp-validation-for="Producto.Precio" class="text-danger"></span>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.DescripcionCorta" class="form-label">Descripcion Corta</label>
-					<input asp-for="Producto.DescripcionCorta" class="form-control" />
-					<span asp-validation-for="Producto.DescripcionCorta" class="text-danger"></span>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.DescripcionProducto" class="form-label">Descripcion Prodcuto</label>
-					<textarea asp-for="Producto.DescripcionProducto" class="form-control summernote"></textarea>
-					<span asp-validation-for="Producto.DescripcionProducto" class="text-danger"></span>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.ImagenUrl" class="form-label">Imagen Prodcuto</label>
-					<input type="file" name="files" id="imagenId" class="form-control" />
-				</div>
-			</div>
-			<br />
-
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.CategoriaId" class="form-label">Categoria</label>
-					<select asp-for="Producto.CategoriaId" asp-items="@Model.CategoriaLista" class="form-select">
-						<option disabled selected>--Seleccione--</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<label asp-for="Producto.TipoAplicacionId" class="form-label">Tipo Aplicacion</label>
-					<select asp-for="Producto.TipoAplicacionId" asp-items="@Model.TipoAplicacionLista" class="form-select">
-						<option disabled selected>--Seleccione--</option>
-					</select>
-				</div>
-			</div>
-
-			<br />
-
-			<div class="d-grid gap-2 d-md-block">
+			<div class="col-4">
 				@if (Model.Producto.Id != 0)
 				{
-					<button type="submit" class="btn btn-primary">Actualizar</button>
-
+					<img src="@WC.ImagenRuta@Model.Producto.ImagenUrl" style="width:100%; border-radius: 5px; border:1px solid #bbb" />
 				}
-				else
-				{
-					<button type="submit" onclick="return validarImagen()" class="btn btn-primary">Crear Nuevo</button>
-				}
-				<a asp-controller="Producto" asp-action="Index" class="btn btn-success">Regresar</a>
 			</div>
 
 		</div>
@@ -107,18 +120,18 @@
  }
 <script>
 
-		$(document).ready(function(){
-			$('.summernote').summernote({
-				height:250
-			});
+	$(document).ready(function(){
+		$('.summernote').summernote({
+			height:250
 		});
-		function validarImagen() {
-			if (document.getElementById("imagenId").value==""){
-				swal("Error", "Seleccione una imagen", "error");
-				return false;
-			}
-			return true;
+	});
+	function validarImagen() {
+		if (document.getElementById("imagenId").value==""){
+			swal("Error", "Seleccione una imagen", "error");
+			return false;
 		}
+		return true;
+	}
 </script>
 
 }

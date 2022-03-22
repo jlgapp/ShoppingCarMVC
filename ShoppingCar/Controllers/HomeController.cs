@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShoppingCar.Datos;
 using ShoppingCar.Models;
+using ShoppingCar.Models.ViewModels;
 using System.Diagnostics;
 
 namespace ShoppingCar.Controllers
@@ -7,16 +10,43 @@ namespace ShoppingCar.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM homeVM = new HomeVM()
+            {
+                Productos = _context.Producto
+                                        .Include(c => c.Categoria)
+                                        .Include(t => t.TipoAplicacion),
+                Categorias = _context.Categoria
+            };
+
+            return View(homeVM);
         }
+
+        public IActionResult Detalle(int Id)
+        {
+            DetalleVM detalleVM = new DetalleVM()
+            {
+                Producto = _context.Producto
+                                    .Include(c => c.Categoria)
+                                    .Include(t => t.TipoAplicacion)
+                                    .Where(t => t.Id == Id)
+                                    .FirstOrDefault(),
+                ExisteEnCarro = false
+            };
+            return View(detalleVM);
+        }
+
+
 
         public IActionResult Privacy()
         {
