@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingCar.Datos;
 using ShoppingCar.Models;
 
 namespace ShoppingCar.Controllers
 {
+    [Authorize(Roles =WC.AdminRole)]
     public class TipoAplicacionController : Controller
     {
         private readonly ApplicationDbContext _context;

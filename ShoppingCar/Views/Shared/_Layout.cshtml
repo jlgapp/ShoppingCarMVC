@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using ShoppingCar.Utilidades
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -20,22 +24,49 @@
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between flex-row-reverse">
+
+					<partial name="_LoginPartial" />
+
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>						
-
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								Administrar Contenido
-							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="nav-link text-dark" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a></li>
-								<li><a class="nav-link text-dark" asp-area="" asp-controller="TipoAplicacion" asp-action="Index">TipoAplicacion</a></li>
-								<li><a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Producto</a></li>
-							</ul>
 						</li>
+						@if (User.IsInRole(WC.AdminRole))
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Administrar Contenido
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<li><a class="nav-link text-dark" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a></li>
+									<li><a class="nav-link text-dark" asp-area="" asp-controller="TipoAplicacion" asp-action="Index">TipoAplicacion</a></li>
+									<li><a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Producto</a></li>
+									<li><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+
+								</ul>
+							</li>
+						}
+						<li>
+							@if (HttpContextAccessor.HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras) != null
+									&&
+									HttpContextAccessor.HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras).Count() > 0)
+							{
+								<a asp-action="Index" , asp-controller="Carro" class="nav-link">
+									@{
+										var count = HttpContextAccessor.HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras).Count();
+									}
+									<i class="fa-solid fa-cart-shopping"></i> &nbsp; (@count)
+								</a>
+							}
+							else
+							{
+								<a href="#" class="nav-link">
+									<i class="fa-solid fa-cart-shopping"></i> &nbsp; (0)
+								</a>
+							}
+						</li>
+
 					</ul>
 				</div>
 			</div>

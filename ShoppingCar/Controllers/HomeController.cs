@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCar.Datos;
 using ShoppingCar.Models;
 using ShoppingCar.Models.ViewModels;
+using ShoppingCar.Utilidades;
 using System.Diagnostics;
 
 namespace ShoppingCar.Controllers
@@ -34,6 +36,14 @@ namespace ShoppingCar.Controllers
 
         public IActionResult Detalle(int Id)
         {
+
+            List<CarroCompra> carroComprasLista = new List<CarroCompra>();
+            if (HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras) != null
+                && HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras).Count() > 0)
+            {
+                carroComprasLista = HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras);
+            }
+
             DetalleVM detalleVM = new DetalleVM()
             {
                 Producto = _context.Producto
@@ -43,9 +53,49 @@ namespace ShoppingCar.Controllers
                                     .FirstOrDefault(),
                 ExisteEnCarro = false
             };
+            foreach (var item in carroComprasLista)
+            {
+                if(item.ProductoId == Id)
+                {
+                    detalleVM.ExisteEnCarro = true;
+                }
+
+            }
+
             return View(detalleVM);
         }
+        [HttpPost, ActionName("Detalle")]
+        public IActionResult DetallePost(int Id)
+        {
+            List<CarroCompra> carroComprasLista = new List<CarroCompra>();
+            if(HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras) != null
+                && HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras).Count() > 0)
+            {
+                carroComprasLista = HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras);
+            }
+            carroComprasLista.Add(new CarroCompra { ProductoId = Id });
+            HttpContext.Session.Set(WC.SessionCarroCompras, carroComprasLista);
+            return RedirectToAction(nameof(Index));
+        }
 
+        public IActionResult RemoverDeCarro(int Id)
+        {
+            List<CarroCompra> carroComprasLista = new List<CarroCompra>();
+            if (HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras) != null
+                && HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras).Count() > 0)
+            {
+                carroComprasLista = HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras);
+            }
+            
+            var productoRemover = carroComprasLista.SingleOrDefault(x => x.ProductoId == Id);
+            if (productoRemover != null)
+            {
+                carroComprasLista.Remove(productoRemover);
+            }
+
+            HttpContext.Session.Set(WC.SessionCarroCompras, carroComprasLista);
+            return RedirectToAction(nameof(Index));
+        }
 
 
         public IActionResult Privacy()
