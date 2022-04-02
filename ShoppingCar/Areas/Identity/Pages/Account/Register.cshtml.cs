@@ -18,7 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using ShoppingCar.Models;
+using ShoppingCar.Modelos;
+using ShoppingCar.Utilidades;
 
 namespace ShoppingCar.Areas.Identity.Pages.Account
 {

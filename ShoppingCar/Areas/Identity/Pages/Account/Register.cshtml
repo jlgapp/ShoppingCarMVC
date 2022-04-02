@@ -1,6 +1,6 @@
 ﻿@page
 @model RegisterModel
-@if (User.IsInRole(ShoppingCar.WC.AdminRole))
+@if (User.IsInRole(ShoppingCar.Utilidades.WC.AdminRole))
 {
 	<h1>Registrar usuario administrador</h1>
 }
@@ -40,7 +40,7 @@ else
 				<label asp-for="Input.ConfirmPassword"></label>
 				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 			</div>
-			@if (User.IsInRole(ShoppingCar.WC.AdminRole))
+			@if (User.IsInRole(ShoppingCar.Utilidades.WC.AdminRole))
 			{
 				<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">Register Admin</button>
 			}

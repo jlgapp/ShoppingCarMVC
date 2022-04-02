@@ -22,4 +22,10 @@
     <Folder Include="wwwroot\imagenes\producto\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShoppingCar.AccesoDatos\ShoppingCar.AccesoDatos.csproj" />
+    <ProjectReference Include="..\ShoppingCar.Modelos\ShoppingCar.Modelos.csproj" />
+    <ProjectReference Include="..\ShoppingCar.Utilidades\ShoppingCar.Utilidades.csproj" />
+  </ItemGroup>
+
 </Project>

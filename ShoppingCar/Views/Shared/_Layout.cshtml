@@ -13,13 +13,19 @@
 	<link rel="stylesheet" href="~/ShoppingCar.styles.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/fontawesome/css/all.css" asp-append-version="true" />
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
 
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShoppingCar</a>
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+					<img src="~/imagenes/tile.png" style="width:40%" />
+				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -30,7 +36,7 @@
 
 					<ul class="navbar-nav flex-grow-1">
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 						@if (User.IsInRole(WC.AdminRole))
 						{
@@ -39,11 +45,20 @@
 									Administrar Contenido
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li><a class="nav-link text-dark" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a></li>
-									<li><a class="nav-link text-dark" asp-area="" asp-controller="TipoAplicacion" asp-action="Index">TipoAplicacion</a></li>
-									<li><a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Producto</a></li>
-									<li><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Categoria</a></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="TipoAplicacion" asp-action="Index">TipoAplicacion</a></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="Producto" asp-action="Index">Producto</a></li>
+									<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
 
+								</ul>
+							</li>
+
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Administrar Ordenes
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<li><a class="dropdown-item" asp-area="" asp-controller="Orden" asp-action="Index">Orden</a></li>
 								</ul>
 							</li>
 						}
@@ -78,8 +93,8 @@
 		</main>
 	</div>
 
-	<footer class="border-top footer text-muted">
-		<div class="container">
+	<footer class="border-top footer bg-dark">
+		<div class="container text-white">
 			&copy; 2022 - ShoppingCar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
@@ -88,6 +103,10 @@
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

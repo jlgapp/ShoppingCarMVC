@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ShoppingCar.Datos;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using ShoppingCar.AccesoDatos.Datos;
+using ShoppingCar.AccesoDatos.Datos.Repositorio;
+using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
 using ShoppingCar.Utilidades;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,16 @@ builder.Services.AddSession(opt =>
     opt.Cookie.HttpOnly = true;
     opt.Cookie.IsEssential = true;
 });
+
+builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddScoped<IProductoRepositorio, ProductoRepositorio>();
+
+builder.Services.AddScoped<IOrdenRepositorio, OrdenRepositorio>();
+builder.Services.AddScoped<IOrdenDetalleRepositorio, OrdenDetalleRepositorio>();
+builder.Services.AddScoped<IUsuarioAplicacionRepositorio, UsuarioAplicacionRepositorio>();
+
+
 
 var app = builder.Build();
 

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCar", "ShoppingCar\ShoppingCar.csproj", "{94E4CB28-2CAB-4FFC-AD10-30B33B91BBEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCar", "ShoppingCar\ShoppingCar.csproj", "{94E4CB28-2CAB-4FFC-AD10-30B33B91BBEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCar.Utilidades", "ShoppingCar.Utilidades\ShoppingCar.Utilidades.csproj", "{B1BA58EC-AA25-4F3A-A157-E52897FC7051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCar.Modelos", "ShoppingCar.Modelos\ShoppingCar.Modelos.csproj", "{8C6A99BD-8202-448D-8F48-4DDD208A6A1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCar.AccesoDatos", "ShoppingCar.AccesoDatos\ShoppingCar.AccesoDatos.csproj", "{78BDA59F-EEAD-4A45-AC5C-F407098E1D3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{94E4CB28-2CAB-4FFC-AD10-30B33B91BBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94E4CB28-2CAB-4FFC-AD10-30B33B91BBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94E4CB28-2CAB-4FFC-AD10-30B33B91BBEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1BA58EC-AA25-4F3A-A157-E52897FC7051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1BA58EC-AA25-4F3A-A157-E52897FC7051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1BA58EC-AA25-4F3A-A157-E52897FC7051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1BA58EC-AA25-4F3A-A157-E52897FC7051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C6A99BD-8202-448D-8F48-4DDD208A6A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C6A99BD-8202-448D-8F48-4DDD208A6A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C6A99BD-8202-448D-8F48-4DDD208A6A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C6A99BD-8202-448D-8F48-4DDD208A6A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78BDA59F-EEAD-4A45-AC5C-F407098E1D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78BDA59F-EEAD-4A45-AC5C-F407098E1D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78BDA59F-EEAD-4A45-AC5C-F407098E1D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78BDA59F-EEAD-4A45-AC5C-F407098E1D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

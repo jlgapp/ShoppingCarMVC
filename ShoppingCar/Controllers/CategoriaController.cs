@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCar.Datos;
-using ShoppingCar.Models;
+using ShoppingCar.AccesoDatos.Datos;
+using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
+using ShoppingCar.Modelos;
+using ShoppingCar.Utilidades;
 
 namespace ShoppingCar.Controllers
 {
     [Authorize(Roles = WC.AdminRole)]
     public class CategoriaController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICategoriaRepositorio _context;
 
-        public CategoriaController(ApplicationDbContext context)
+        public CategoriaController(ICategoriaRepositorio context)
         {
             _context = context;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Categoria> lista = _context.Categoria;
+            IEnumerable<Categoria> lista = _context.ObtenerTodos();
 
             return View(lista);
         }
@@ -34,8 +36,8 @@ namespace ShoppingCar.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Categoria.Add(categoria);
-                _context.SaveChanges();
+                _context.Agregar(categoria);
+                _context.Grabar();
                 return RedirectToAction("Index");
             }
             return View(categoria);
@@ -50,7 +52,7 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            var obj = _context.Categoria.Find(IdCat);
+            var obj = _context.Obtener(IdCat.GetValueOrDefault());
             if (obj == null) return NotFound();
 
 
@@ -64,8 +66,9 @@ namespace ShoppingCar.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Categoria.Update(categoria);
-                _context.SaveChanges();
+                //_context.Categoria.Update(categoria);
+                _context.UpdateEntity(categoria);
+                _context.Grabar();
                 return RedirectToAction("Index");
             }
             return View(categoria);
@@ -81,7 +84,7 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            var obj = _context.Categoria.Find(IdCat);
+            var obj = _context.Obtener(IdCat.GetValueOrDefault());
             if (obj == null) return NotFound();
 
 
@@ -97,8 +100,8 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            _context.Categoria.Remove(categoria);
-            _context.SaveChanges();
+            _context.Remover(categoria);
+            _context.Grabar();
             return RedirectToAction("Index");
 
         }

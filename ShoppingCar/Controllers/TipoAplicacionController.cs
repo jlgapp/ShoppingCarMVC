@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCar.Datos;
-using ShoppingCar.Models;
+using ShoppingCar.AccesoDatos.Datos;
+using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
+using ShoppingCar.Modelos;
+using ShoppingCar.Utilidades;
 
 namespace ShoppingCar.Controllers
 {
-    [Authorize(Roles =WC.AdminRole)]
+    [Authorize(Roles = WC.AdminRole)]
     public class TipoAplicacionController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepositorio<TipoAplicacion> _context;
 
-        public TipoAplicacionController(ApplicationDbContext context)
+        public TipoAplicacionController(IRepositorio<TipoAplicacion> context)
         {
             _context = context;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<TipoAplicacion> lista = _context.TipoAplicacion;
+            IEnumerable<TipoAplicacion> lista = _context.ObtenerTodos();
 
             return View(lista);
         }
@@ -35,8 +37,8 @@ namespace ShoppingCar.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.TipoAplicacion.Add(tipoAplicacion);
-                _context.SaveChanges();
+                _context.Agregar(tipoAplicacion);
+                _context.Grabar();
                 return RedirectToAction("Index");
             }
             return View(tipoAplicacion);
@@ -49,7 +51,7 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            var obj = _context.TipoAplicacion.Find(Id);
+            var obj = _context.Obtener(Id.GetValueOrDefault());
             if (obj == null) return NotFound();
 
 
@@ -63,8 +65,8 @@ namespace ShoppingCar.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.TipoAplicacion.Update(tipoAplicacion);
-                _context.SaveChanges();
+                _context.UpdateEntity(tipoAplicacion);
+                _context.Grabar();
                 return RedirectToAction("Index");
             }
             return View(tipoAplicacion);
@@ -80,7 +82,7 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            var obj = _context.TipoAplicacion.Find(Id);
+            var obj = _context.Obtener(Id.GetValueOrDefault());
             if (obj == null) return NotFound();
 
 
@@ -96,8 +98,8 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            _context.TipoAplicacion.Remove(tipoAplicacion);
-            _context.SaveChanges();
+            _context.Remover(tipoAplicacion);
+            _context.Grabar();
             return RedirectToAction("Index");
 
         }

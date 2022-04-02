@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShoppingCar.Datos;
-using ShoppingCar.Models;
-using ShoppingCar.Models.ViewModels;
+using ShoppingCar.AccesoDatos.Datos;
+using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
+using ShoppingCar.Modelos;
+using ShoppingCar.Modelos.ViewModels;
 using ShoppingCar.Utilidades;
 using System.Diagnostics;
 
@@ -12,23 +13,25 @@ namespace ShoppingCar.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly IProductoRepositorio _productoRepositorio;
+        private readonly ICategoriaRepositorio _categoriaRepositorio;
 
-
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger,
+            IProductoRepositorio productoRepositorio,
+            ICategoriaRepositorio categoriaRepositorio
+            )
         {
             _logger = logger;
-            _context = context;
+            _categoriaRepositorio= categoriaRepositorio ;
+            _productoRepositorio= productoRepositorio ;
         }
 
         public IActionResult Index()
         {
             HomeVM homeVM = new HomeVM()
             {
-                Productos = _context.Producto
-                                        .Include(c => c.Categoria)
-                                        .Include(t => t.TipoAplicacion),
-                Categorias = _context.Categoria
+                Productos = _productoRepositorio.ObtenerTodos(incluirPropiedades:"Categoria,TipoAplicacion"),
+                Categorias = _categoriaRepositorio.ObtenerTodos()
             };
 
             return View(homeVM);
@@ -46,11 +49,12 @@ namespace ShoppingCar.Controllers
 
             DetalleVM detalleVM = new DetalleVM()
             {
-                Producto = _context.Producto
+                Producto = _productoRepositorio.ObtenerPrimero(t => t.Id == Id,incluirPropiedades:"Categoria,TipoAplicacion"),
+                /*Producto = _context.Producto
                                     .Include(c => c.Categoria)
                                     .Include(t => t.TipoAplicacion)
                                     .Where(t => t.Id == Id)
-                                    .FirstOrDefault(),
+                                    .FirstOrDefault(),*/
                 ExisteEnCarro = false
             };
             foreach (var item in carroComprasLista)

@@ -2,20 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingCar.Datos;
-using ShoppingCar.Models;
-using ShoppingCar.Models.ViewModels;
-
+using ShoppingCar.AccesoDatos.Datos;
+using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
+using ShoppingCar.Modelos;
+using ShoppingCar.Modelos.ViewModels;
+using ShoppingCar.Utilidades;
 
 namespace ShoppingCar.Controllers
 {
     [Authorize(Roles = WC.AdminRole)]
     public class ProductoController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProductoRepositorio _context;
         private readonly IWebHostEnvironment _webHostEnvironment; // para poder recibir images
 
-        public ProductoController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ProductoController(IProductoRepositorio context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
@@ -23,9 +24,8 @@ namespace ShoppingCar.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Producto> lista = _context.Producto
-                                                    .Include(cat => cat.Categoria)
-                                                    .Include(ta => ta.TipoAplicacion);
+            var include = "Categoria,TipoAplicacion";
+            IEnumerable<Producto> lista = _context.ObtenerTodos(incluirPropiedades: include);
             return View(lista);
         }
 
@@ -46,7 +46,7 @@ namespace ShoppingCar.Controllers
             ProductoVM productoVM = new ProductoVM()
             {
                 Producto = new Producto(),
-                CategoriaLista = _context.Categoria.Select(c => new SelectListItem
+                /*CategoriaLista = _context.Categoria.Select(c => new SelectListItem
                 {
                     Text = c.NombreCategoria,
                     Value = c.Id.ToString()
@@ -55,7 +55,9 @@ namespace ShoppingCar.Controllers
                 {
                     Text = c.Nombre,
                     Value = c.Id.ToString()
-                })
+                })*/
+                CategoriaLista = _context.ObtenerTodosDropDownList(WC.CategoriaNombre),
+                TipoAplicacionLista = _context.ObtenerTodosDropDownList(WC.TipoAplicacionNombre)
             };
 
 
@@ -64,7 +66,7 @@ namespace ShoppingCar.Controllers
                 return View(productoVM);
             else
             {
-                productoVM.Producto = _context.Producto.Find(id);
+                productoVM.Producto = _context.Obtener(id.GetValueOrDefault());
 
                 if (productoVM.Producto == null) return NotFound();
 
@@ -93,13 +95,13 @@ namespace ShoppingCar.Controllers
                         files[0].CopyTo(stream);
                     }
                     productoVM.Producto.ImagenUrl = fileName + extension;
-                    _context.Producto.Add(productoVM.Producto);
+                    _context.Agregar(productoVM.Producto);
                 }
                 else
                 {
                     //actualizar con as no tracking no guarda en memoria y no hcae tracking o
                     //contrarestra con el otor objeto que voy a actualizar
-                    var objProducto = _context.Producto.AsNoTracking().FirstOrDefault(p => p.Id == productoVM.Producto.Id);
+                    var objProducto = _context.ObtenerPrimero(p => p.Id == productoVM.Producto.Id, isTracking: false);
                     if (files.Count > 0)
                     {
                         string upload = webRootPath + WC.ImagenRuta;
@@ -123,14 +125,14 @@ namespace ShoppingCar.Controllers
                     {
                         productoVM.Producto.ImagenUrl = objProducto.ImagenUrl;
                     }
-                    _context.Producto.Update(productoVM.Producto);
+                    _context.UpdateEntity(productoVM.Producto);
                 }
-                _context.SaveChanges();
+                _context.Grabar();
                 return RedirectToAction("Index");
             } /// model isvalid
 
             // llenar nuevamente las listas si algo falla
-            productoVM.CategoriaLista = _context.Categoria.Select(c => new SelectListItem
+            /*productoVM.CategoriaLista = _context.Categoria.Select(c => new SelectListItem
             {
                 Text = c.NombreCategoria,
                 Value = c.Id.ToString()
@@ -139,7 +141,9 @@ namespace ShoppingCar.Controllers
             {
                 Text = c.Nombre,
                 Value = c.Id.ToString()
-            });
+            });*/
+            productoVM.CategoriaLista = _context.ObtenerTodosDropDownList(WC.CategoriaNombre);
+            productoVM.TipoAplicacionLista = _context.ObtenerTodosDropDownList(WC.TipoAplicacionNombre);
 
             return View(productoVM);
         }
@@ -151,10 +155,7 @@ namespace ShoppingCar.Controllers
             {
                 return NotFound();
             }
-            var obj = _context.Producto
-                .Include(cat => cat.Categoria)
-                .Include(ta => ta.TipoAplicacion)
-                .FirstOrDefault(p=> p.Id == Id);
+            var obj = _context.ObtenerPrimero(p=> p.Id == Id, incluirPropiedades: "Categoria,TipoAplicacion");
 
             if (obj == null) return NotFound();
 
@@ -177,8 +178,8 @@ namespace ShoppingCar.Controllers
             if (System.IO.File.Exists(anterior))
                 System.IO.File.Delete(anterior);
 
-            _context.Producto.Remove(producto);
-            _context.SaveChanges();
+            _context.Remover(producto);
+            _context.Grabar();
             return RedirectToAction("Index");
 
         }
