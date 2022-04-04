@@ -38,8 +38,11 @@ namespace ShoppingCar.Controllers
             {
                 _context.Agregar(categoria);
                 _context.Grabar();
+                TempData[WC.Exitosa] = "Registro creado de forma exitosa";
                 return RedirectToAction("Index");
             }
+
+            TempData[WC.Error] = "Error al crear el registro";
             return View(categoria);
 
 
@@ -68,9 +71,11 @@ namespace ShoppingCar.Controllers
             {
                 //_context.Categoria.Update(categoria);
                 _context.UpdateEntity(categoria);
+                TempData[WC.Exitosa] = "Registro creado de forma exitosa";
                 _context.Grabar();
                 return RedirectToAction("Index");
             }
+            TempData[WC.Error] = "Error al crear el registro";
             return View(categoria);
 
 
@@ -102,6 +107,7 @@ namespace ShoppingCar.Controllers
             }
             _context.Remover(categoria);
             _context.Grabar();
+            TempData[WC.Exitosa] = "Registro eliminado de forma exitosa";
             return RedirectToAction("Index");
 
         }

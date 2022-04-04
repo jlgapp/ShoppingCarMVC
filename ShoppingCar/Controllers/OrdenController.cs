@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
 using ShoppingCar.Modelos;
 using ShoppingCar.Modelos.ViewModels;
@@ -6,6 +7,7 @@ using ShoppingCar.Utilidades;
 
 namespace ShoppingCar.Controllers
 {
+    [Authorize(Roles =WC.AdminRole)]
     public class OrdenController : Controller
     {
         private readonly IOrdenRepositorio _ordenRepositorio;
@@ -61,10 +63,13 @@ namespace ShoppingCar.Controllers
             Orden orden = _ordenRepositorio.ObtenerPrimero(o => o.Id == OrdenVM.Orden.Id);
             IEnumerable<OrdenDetalle> ordenDetalle = _ordenDetalleRepositorio
                                                     .ObtenerTodos(d => d.OrdenId == OrdenVM.Orden.Id);
-			foreach (var detalle in ordenDetalle)
-			{
-                _ordenDetalleRepositorio.Remover
-			}
+
+            _ordenDetalleRepositorio.RemoverRango(ordenDetalle);
+            _ordenRepositorio.Remover(orden);
+
+            TempData[WC.Exitosa] = "Registro eliminado de forma exitosa";
+            _ordenRepositorio.Grabar();
+            return RedirectToAction("Index");
 
         }
         #region APIs

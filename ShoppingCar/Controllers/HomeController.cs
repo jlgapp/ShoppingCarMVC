@@ -69,7 +69,7 @@ namespace ShoppingCar.Controllers
             return View(detalleVM);
         }
         [HttpPost, ActionName("Detalle")]
-        public IActionResult DetallePost(int Id)
+        public IActionResult DetallePost(int Id, DetalleVM detalleVM)
         {
             List<CarroCompra> carroComprasLista = new List<CarroCompra>();
             if(HttpContext.Session.Get<IEnumerable<CarroCompra>>(WC.SessionCarroCompras) != null
@@ -77,8 +77,10 @@ namespace ShoppingCar.Controllers
             {
                 carroComprasLista = HttpContext.Session.Get<List<CarroCompra>>(WC.SessionCarroCompras);
             }
-            carroComprasLista.Add(new CarroCompra { ProductoId = Id });
+            carroComprasLista.Add(new CarroCompra { ProductoId = Id, MetroCuadrado = detalleVM.Producto.TempMetroCuadrado });
             HttpContext.Session.Set(WC.SessionCarroCompras, carroComprasLista);
+
+            TempData[WC.Exitosa] = "Registro agregado al carro de forma exitosa";
             return RedirectToAction(nameof(Index));
         }
 
@@ -98,6 +100,9 @@ namespace ShoppingCar.Controllers
             }
 
             HttpContext.Session.Set(WC.SessionCarroCompras, carroComprasLista);
+
+            TempData[WC.Exitosa] = "Registro eliminado de forma exitosa";
+
             return RedirectToAction(nameof(Index));
         }
 

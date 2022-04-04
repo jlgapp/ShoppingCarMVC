@@ -80,7 +80,12 @@ namespace ShoppingCar.AccesoDatos.Datos.Repositorio
             dbSet.Remove(entidad);
         }
 
-        public void UpdateEntity(T entity)
+		public void RemoverRango(IEnumerable<T> entidad)
+		{
+			dbSet.RemoveRange(entidad);
+		}
+
+		public void UpdateEntity(T entity)
         {
             dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;

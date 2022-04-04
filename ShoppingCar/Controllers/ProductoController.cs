@@ -128,6 +128,8 @@ namespace ShoppingCar.Controllers
                     _context.UpdateEntity(productoVM.Producto);
                 }
                 _context.Grabar();
+
+                TempData[WC.Exitosa] = "Registro creado/modificado de forma exitosa";
                 return RedirectToAction("Index");
             } /// model isvalid
 
@@ -180,6 +182,8 @@ namespace ShoppingCar.Controllers
 
             _context.Remover(producto);
             _context.Grabar();
+
+            TempData[WC.Exitosa] = "Registro eliminado de forma exitosa";
             return RedirectToAction("Index");
 
         }

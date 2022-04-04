@@ -13,5 +13,9 @@
         public const string CategoriaNombre = "Categoria";
         public const string TipoAplicacionNombre = "TipoAplicacion";
 
+        public const string Exitosa = "Proceso Exitoso";
+        public const string Error = "Proceso Con Error";
+
+
     }
 }

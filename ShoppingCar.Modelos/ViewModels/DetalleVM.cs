@@ -9,5 +9,6 @@
 
         public Producto Producto { get; set; }
         public bool ExisteEnCarro { get; set; }
+
     }
 }

@@ -19,6 +19,7 @@ namespace ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio
 
         void Agregar(T entidad);
         void Remover(T entidad);
+        void RemoverRango (IEnumerable<T> entidad);
         void Grabar();
         public void UpdateEntity(T entity);
     }
