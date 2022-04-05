@@ -18,6 +18,9 @@ namespace ShoppingCar.AccesoDatos.Datos
         public DbSet<Orden> Orden { get; set; }
         public DbSet<OrdenDetalle> OrdenDetalle { get; set; }
 
+        public DbSet<Venta> Venta { get; set; }
+        public DbSet<VentaDetalle> VentaDetalle { get; set; }
+
 
 
 

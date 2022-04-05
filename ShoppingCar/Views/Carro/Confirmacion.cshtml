@@ -1,6 +1,18 @@
-﻿<div class="text-center">
-	<h1 class="text-info">Confirmación</h1>
-	<p>Hemos recibido tu consulta, ya se comunicaran con Ud.</p>	
-	<img src="~/imagenes/patio.jpg" style="width:80%"/>
+﻿@model ShoppingCar.Modelos.Venta
+
+<div class="text-center">
+
+	@if (Model != null)
+	{
+		<h1 class="text-info">Venta Creada</h1>
+		<p> Venta @Model.Id creada de forma correcta</p>
+	}
+	else
+	{
+		<h1 class="text-info">Confirmación</h1>
+		<p>Hemos recibido tu consulta, ya se comunicaran con Ud.</p>
+	}
+
+	<img src="~/imagenes/patio.jpg" style="width:80%" />
 </div>
 

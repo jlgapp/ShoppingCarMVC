@@ -1,0 +1,28 @@
+﻿@model ShoppingCar.Modelos.ViewModels.VentaVM
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+	<ejs-grid id="Grid" dataSource="@Model.VentaLista" allowFiltering="true" allowSorting="true" allowPaging="true">
+		<e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+		<e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+		<e-grid-columns>
+			<e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="NombreCompleto" headerText="Nombres" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="Email" headerText="Email" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="Telefono" headerText="Telefono" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="EstadoVenta" headerText="Estado" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="FechaVenta" headerText="Fecha"  customFormat="@(new {type="date", format="dd/MM/yyyy"})" isPrimaryKey="true" textAlign="Right" width="100"></e-grid-column>
+			<e-grid-column field="Id" headerText="" width="70"
+				template="<a rel='nofollow' href='Venta/Detalle/${Id}' class='btn btn-primary'>
+							<i class='fa fa-list'></i>
+							</<a>">
+			</e-grid-column>
+
+			
+		</e-grid-columns>
+	</ejs-grid>
+</div>

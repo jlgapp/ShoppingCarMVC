@@ -5,6 +5,7 @@ using ShoppingCar.AccesoDatos.Datos;
 using ShoppingCar.AccesoDatos.Datos.Repositorio;
 using ShoppingCar.AccesoDatos.Datos.Repositorio.IRepositorio;
 using ShoppingCar.Utilidades;
+using ShoppingCar.Utilidades.BrainTree;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,9 @@ builder.Services.AddSession(opt =>
     opt.Cookie.IsEssential = true;
 });
 
+builder.Services.Configure<BrainTreeSettings>(builder.Configuration.GetSection("BrainTree"));
+builder.Services.AddSingleton<IBrainTreeGate, BrainTreeGate>();
+
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IProductoRepositorio, ProductoRepositorio>();
@@ -40,6 +44,15 @@ builder.Services.AddScoped<IProductoRepositorio, ProductoRepositorio>();
 builder.Services.AddScoped<IOrdenRepositorio, OrdenRepositorio>();
 builder.Services.AddScoped<IOrdenDetalleRepositorio, OrdenDetalleRepositorio>();
 builder.Services.AddScoped<IUsuarioAplicacionRepositorio, UsuarioAplicacionRepositorio>();
+
+builder.Services.AddScoped<IVentaRepositorio, VentaRepositorio>();
+builder.Services.AddScoped<IVentaDetalleRepositorio, VentaDetalleRepositorio>();
+
+builder.Services.AddAuthentication().AddFacebook( options =>
+{
+    options.AppId = "356226039787186";
+    options.AppSecret = "94dcff6d0ae03e8bb481fb39b79dce4a";
+});
 
 
 
